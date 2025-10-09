@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 
 formatador_brl = lambda x: f"R$ {x:,.2f}".replace(",", "v").replace(".", ",").replace("v", ".")
 
@@ -13,8 +14,7 @@ st.set_page_config(
 
 # --- CABEÇALHO ---
 # Título principal do dashboard
-st.title("🍎 Projeto: Caracterização da Herança e Teste de Alelismo para a " \
-"Resistência à Mancha Foliar de Glomerella em Macieira")
+st.title("🍎 Resistência MFG Herança e Alelismo")
 st.markdown("---")
 
 # --- BARRA LATERAL (MENU DE NAVEGAÇÃO) ---
@@ -22,7 +22,13 @@ st.markdown("---")
 st.sidebar.header("Navegação")
 pagina_selecionada = st.sidebar.radio(
     "Selecione uma seção:",
-    ["Resumo do Projeto", "A Equipe", "Orçamento Detalhado", "Metodologia e Entregáveis"]
+    [
+        "Resumo do Projeto",
+        "A Equipe",
+        "Cronograma de Execução",
+        "Orçamento Detalhado",
+        "Metodologia e Entregáveis"
+    ]
 )
 st.sidebar.markdown("---")
 st.sidebar.info(
@@ -105,7 +111,86 @@ elif pagina_selecionada == "A Equipe":
         st.link_button("Acessar Currículo Lattes", "http://lattes.cnpq.br/1910689375970542")
 
 
-# 3. PÁGINA: ORÇAMENTO DETALHADO
+# 3. PÁGINA: CRONOGRAMA DE EXECUÇÃO
+elif pagina_selecionada == "Cronograma de Execução":
+    st.header("📆 Cronograma de Execução (24 Meses)")
+
+    dados_cronograma = [
+        dict(
+            Task="A1: Planejamento, Preparo de Infraestrutura e Manejo dos Parentais",
+            Start='2026-06-01',
+            Finish='2026-10-31',
+            Resource="Ano 1"
+        ),
+        dict(
+            Task="A2: Execução dos Cruzamentos, Colheita e Processamento das Sementes",
+            Start='2026-09-01',
+            Finish='2027-01-31',
+            Resource="Ano 1 & 2"
+        ),
+        dict(
+            Task="A3: Germinação, Cultivo e Manejo das Populações F1",
+            Start='2027-02-01',
+            Finish='2027-09-30',
+            Resource="Ano 2"
+        ),
+        dict(
+            Task="A4: Inoculação, Avaliação Fenotípica e Análise Estatística dos Dados",
+            Start='2027-10-01',
+            Finish='2028-01-31',
+            Resource="Ano 2 & 3"
+        ),
+        dict(
+            Task="A5: Interpretação dos Resultados, Redação de Relatórios e Publicações",
+            Start='2028-02-01',
+            Finish='2028-05-31',
+            Resource="Ano 3"
+        ),
+    ]
+    df_cronograma = pd.DataFrame(dados_cronograma)
+
+    # Criação do Gráfico de Gantt com Plotly Express
+    fig = px.timeline(
+        df_cronograma,
+        x_start="Start",
+        x_end="Finish",
+        y="Task",
+        color="Resource",
+        title="Fases e Atividades do Projeto",
+        labels={"Task": "Atividades", "Resource": "Período"},
+        color_discrete_map={
+            "Ano 1": "#90EE90",      # LightGreen
+            "Ano 2": "#3CB371",      # MediumSeaGreen
+            "Ano 3": "#006400",      # DarkGreen
+            "Ano 1 & 2": "#20B2AA",  # LightSeaGreen
+            "Ano 2 & 3": "#008080"   # Teal
+        }
+    )
+
+    # Melhorando a visualização do gráfico
+    fig.update_yaxes(autorange="reversed") # Inverte a ordem das tarefas para A1 ficar no topo
+    fig.update_layout(
+        title_font_size=20,
+        font_size=14,
+        xaxis_title="Linha do Tempo (Meses)",
+        yaxis_title=None, # Remove o título do eixo Y
+        legend_title_text='Período de Execução'
+    )
+    
+    # Exibindo o gráfico no Streamlit
+    st.plotly_chart(fig, use_container_width=True)
+
+    st.info(
+        """
+        **Legenda das Atividades:**
+        - **A1 e A2:** Foco na criação e estabelecimento das populações de estudo.
+        - **A3:** Período principal de condução do experimento e coleta de dados fenotípicos.
+        - **A4 e A5:** Fase final de análise, interpretação e disseminação dos resultados.
+        """
+    )
+
+
+# 4. PÁGINA: ORÇAMENTO DETALHADO
 elif pagina_selecionada == "Orçamento Detalhado":
     st.header("💰 Orçamento Detalhado")
     st.write("O orçamento total solicitado é de **R$ 200.000,00**, distribuído ao longo de 24 meses.")
@@ -207,7 +292,7 @@ elif pagina_selecionada == "Orçamento Detalhado":
     )
 
 
-# 4. PÁGINA: METODOLOGIA E ENTREGÁVEIS
+# 5. PÁGINA: METODOLOGIA E ENTREGÁVEIS
 elif pagina_selecionada == "Metodologia e Entregáveis":
     st.header("🔬 Metodologia e Resultados Esperados")
 
