@@ -117,31 +117,31 @@ elif pagina_selecionada == "Cronograma de Execução":
 
     dados_cronograma = [
         dict(
-            Task="A1: Planejamento, Preparo de Infraestrutura e Manejo dos Parentais",
+            Task="A1",
             Start='2026-06-01',
             Finish='2026-10-31',
             Resource="Ano 1"
         ),
         dict(
-            Task="A2: Execução dos Cruzamentos, Colheita e Processamento das Sementes",
+            Task="A2",
             Start='2026-09-01',
             Finish='2027-01-31',
             Resource="Ano 1 & 2"
         ),
         dict(
-            Task="A3: Germinação, Cultivo e Manejo das Populações F1",
+            Task="A3",
             Start='2027-02-01',
             Finish='2027-09-30',
             Resource="Ano 2"
         ),
         dict(
-            Task="A4: Inoculação, Avaliação Fenotípica e Análise Estatística dos Dados",
+            Task="A4",
             Start='2027-10-01',
             Finish='2028-01-31',
             Resource="Ano 2 & 3"
         ),
         dict(
-            Task="A5: Interpretação dos Resultados, Redação de Relatórios e Publicações",
+            Task="A5",
             Start='2028-02-01',
             Finish='2028-05-31',
             Resource="Ano 3"
@@ -159,11 +159,11 @@ elif pagina_selecionada == "Cronograma de Execução":
         title="Fases e Atividades do Projeto",
         labels={"Task": "Atividades", "Resource": "Período"},
         color_discrete_map={
-            "Ano 1": "#90EE90",      # LightGreen
-            "Ano 2": "#3CB371",      # MediumSeaGreen
-            "Ano 3": "#006400",      # DarkGreen
-            "Ano 1 & 2": "#20B2AA",  # LightSeaGreen
-            "Ano 2 & 3": "#008080"   # Teal
+            "Ano 1": "#FADADD",      # Rosa claro (Light Pink)
+            "Ano 1 & 2": "#F4978E",  # Salmão (Salmon)
+            "Ano 2": "#D90429",      # Vermelho vibrante (Vibrant Red)
+            "Ano 2 & 3": "#8D0801",  # Vermelho escuro (Dark Red)
+            "Ano 3": "#640D14"       # Bordô (Maroon/Burgundy)
         }
     )
 
@@ -183,15 +183,74 @@ elif pagina_selecionada == "Cronograma de Execução":
     st.info(
         """
         **Legenda das Atividades:**
-        - **A1 e A2:** Foco na criação e estabelecimento das populações de estudo.
-        - **A3:** Período principal de condução do experimento e coleta de dados fenotípicos.
-        - **A4 e A5:** Fase final de análise, interpretação e disseminação dos resultados.
+        - **A1:** Planejamento, Preparo de Infraestrutura e Manejo dos Parentais.
+        - **A2:** Execução dos Cruzamentos, Colheita e Processamento das Sementes.
+        - **A3:** Germinação, Cultivo e Manejo das Populações F1.
+        - **A4:** Inoculação, Avaliação Fenotípica e Análise Estatística dos Dados.
+        - **A5:** Interpretação dos Resultados, Redação de Relatórios e Publicações.
         """
     )
 
 
 # 4. PÁGINA: ORÇAMENTO DETALHADO
 elif pagina_selecionada == "Orçamento Detalhado":
+    st.header("💰 Orçamento Detalhado")
+    st.write("O orçamento total solicitado é de **R$ 200.000,00**, distribuído ao longo de 24 meses.")
+
+    # --- 1. CONSOLIDAR TODOS OS DADOS DO ORÇAMENTO ---
+    dados_completos = [
+        # Itens de Custeio
+        {"Tipo": "Custeio", "Item": "Diárias", "Valor": 59_500},
+        {"Tipo": "Custeio", "Item": "Material de Consumo", "Valor": 60_500},
+        {"Tipo": "Custeio", "Item": "Passagens", "Valor": 10_000},
+        {"Tipo": "Custeio", "Item": "Serviços de Terceiros Pessoa Jurídica", "Valor": 10_000},
+        
+        # Itens de Capital (Investimento)
+        {"Tipo": "Investimento", "Item": "Câmara de Germinação (BOD)", "Valor": 18_800},
+        {"Tipo": "Investimento", "Item": "Estereomicroscópio com Câmera", "Valor": 20_000},
+        {"Tipo": "Investimento", "Item": "Medidor de Área Foliar", "Valor": 21_200},
+    ]
+    df_orcamento = pd.DataFrame(dados_completos)
+
+    # --- 2. CRIAR O GRÁFICO DE EXPLOSÃO SOLAR (SUNBURST) ---
+    st.subheader("Distribuição Hierárquica do Orçamento")
+
+    fig_sunburst = px.sunburst(
+        df_orcamento,
+        path=['Tipo', 'Item'],  # Define a hierarquia: 1º anel é 'Tipo', 2º anel é 'Item'
+        values='Valor',
+        title='Orçamento: Custeio vs. Investimento',
+        color='Tipo', # Colore os anéis com base na categoria principal
+        color_discrete_map={
+            'Custeio': '#D50000',      # Vermelho forte para Custeio
+            'Investimento': '#FF8A65', # Vermelho/Laranja claro para Investimento
+            '(?)': '#FADADD'          # Cor para o círculo central
+        }
+    )
+
+    # Melhorando a aparência e informações
+    fig_sunburst.update_traces(
+        textinfo='label+percent entry', # Mostra o rótulo e o percentual da fatia
+        hovertemplate='<b>%{label}</b> Valor: R$ %{value:,.2f} Percentual do Total: %{percentRoot:.2%}',
+        insidetextorientation='radial' # Orienta o texto para facilitar a leitura
+    )
+    fig_sunburst.update_layout(
+        title_font_size=20,
+        font_size=14
+    )
+
+    # Exibe o gráfico no Streamlit
+    st.plotly_chart(fig_sunburst, use_container_width=True)
+    
+    st.info(
+        """
+        **Como ler o gráfico:** O anel interno mostra a divisão geral entre Custeio e Investimento. 
+        O anel externo detalha os itens dentro de cada categoria. Clique em uma categoria no anel interno 
+        para focar nela (dar "zoom").
+        """
+    )
+
+    # --- TABELAS DETALHADAS (Opcional, podem ser mantidas para referência) ---
     st.header("💰 Orçamento Detalhado")
     st.write("O orçamento total solicitado é de **R$ 200.000,00**, distribuído ao longo de 24 meses.")
 
@@ -262,9 +321,9 @@ elif pagina_selecionada == "Orçamento Detalhado":
             "Justificativa": "Avaliação detalhada dos sintomas e documentação fotográfica"
         },
         {
-            "Item": "Sistema de Irrigação Automatizado",
+            "Item": "Medidor de Área Foliar Portátil e Não Destrutivo",
             "Valor (R$)": 21_200,
-            "Justificativa": "Garantir a uniformidade no manejo hídrico das plantas do experimento"
+            "Justificativa": "Ferramenta de precisão que eleva o rigor da avaliação fenotípica."
         },
     ]
 
