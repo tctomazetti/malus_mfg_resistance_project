@@ -62,7 +62,7 @@ if pagina_selecionada == "Resumo do Projeto":
         """
     )
     # Você pode adicionar uma imagem aqui se quiser
-    # st.image("caminho/para/imagem_da_doenca.jpg", caption="Folha com sintomas da Mancha Foliar de Glomerella")
+    st.image("img/mfg.jpg", caption="Folha com sintomas da Mancha Foliar de Glomerella")
 
 
 # 2. PÁGINA: A EQUIPE
@@ -378,4 +378,3 @@ elif pagina_selecionada == "Metodologia e Entregáveis":
         - **Disseminação:** Publicação de um artigo científico em revista qualificada e apresentação dos resultados em congresso nacional.
         """
     )
-
