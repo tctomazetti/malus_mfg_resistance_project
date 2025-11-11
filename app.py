@@ -70,7 +70,6 @@ elif pagina_selecionada == "A Equipe":
     st.header("👥 Equipe Multidisciplinar")
     st.write("O sucesso do projeto é garantido por uma equipe com vasta experiência em áreas complementares.")
 
-    # Crie duas ou mais colunas para organizar os membros da equipe
     col1, col2 = st.columns(2)
 
     with col1:
@@ -85,26 +84,31 @@ elif pagina_selecionada == "A Equipe":
         st.write("Epagri - Estação Experimental de Caçador")
         st.link_button("Acessar Currículo Lattes", "http://lattes.cnpq.br/6890936860763328")
 
-    # Adicione mais membros conforme necessário, criando novas linhas de colunas
     st.markdown("---")
     col3, col4 = st.columns(2)
 
     with col3:
+        st.subheader("Ivan Dagoberto Faoro")
+        st.write("**Melhoramento Genético e Seleção clonal**")
+        st.write("Epagri - Estação Experimental de Caçador")
+        st.link_button("Acessar Currículo Lattes", "http://lattes.cnpq.br/7644524602791533")
+
+    with col4:
         st.subheader("Liane Bahr Thurow")
         st.write("**Melhoramento Genético e Genética Molecular**")
         st.write("Epagri - Estação Experimental de São Joaquim")
         st.link_button("Acessar Currículo Lattes", "http://lattes.cnpq.br/3675128575984460")
+    
+    st.markdown("---")
+    col5, col6 = st.columns(2)
 
-    with col4:
+    with col5:
         st.subheader("Marcelo Couto")
         st.write("**Fitotecnia**")
         st.write("Epagri - Estação Experimental de Caçador")
         st.link_button("Acessar Currículo Lattes", "http://lattes.cnpq.br/4833006168241192")
-    
-    st.markdown("---")
-    col5, _ = st.columns(2)
 
-    with col5:
+    with col6:
         st.subheader("Claudio Ogoshi")
         st.write("**Fitopatologia**")
         st.write("Epagri - Estação Experimental de Caçador")
@@ -120,31 +124,31 @@ elif pagina_selecionada == "Cronograma de Execução":
             Task="A1",
             Start='2026-06-01',
             Finish='2026-10-31',
-            Resource="Ano 1"
+            Resource="2026"
         ),
         dict(
             Task="A2",
             Start='2026-09-01',
             Finish='2027-01-31',
-            Resource="Ano 1 & 2"
+            Resource="2026 & 2027"
         ),
         dict(
             Task="A3",
             Start='2027-02-01',
             Finish='2027-09-30',
-            Resource="Ano 2"
+            Resource="2027"
         ),
         dict(
             Task="A4",
             Start='2027-10-01',
             Finish='2028-01-31',
-            Resource="Ano 2 & 3"
+            Resource="2027 & 2028"
         ),
         dict(
             Task="A5",
             Start='2028-02-01',
             Finish='2028-05-31',
-            Resource="Ano 3"
+            Resource="2028"
         ),
     ]
     df_cronograma = pd.DataFrame(dados_cronograma)
@@ -159,11 +163,11 @@ elif pagina_selecionada == "Cronograma de Execução":
         title="Fases e Atividades do Projeto",
         labels={"Task": "Atividades", "Resource": "Período"},
         color_discrete_map={
-            "Ano 1": "#FADADD",      # Rosa claro (Light Pink)
-            "Ano 1 & 2": "#F4978E",  # Salmão (Salmon)
-            "Ano 2": "#D90429",      # Vermelho vibrante (Vibrant Red)
-            "Ano 2 & 3": "#8D0801",  # Vermelho escuro (Dark Red)
-            "Ano 3": "#640D14"       # Bordô (Maroon/Burgundy)
+            "2026": "#FADADD",      # Rosa claro (Light Pink)
+            "2026 & 2027": "#F4978E",  # Salmão (Salmon)
+            "2027": "#D90429",      # Vermelho vibrante (Vibrant Red)
+            "2027 & 2028": "#8D0801",  # Vermelho escuro (Dark Red)
+            "2028": "#640D14"       # Bordô (Maroon/Burgundy)
         }
     )
 
@@ -378,4 +382,3 @@ elif pagina_selecionada == "Metodologia e Entregáveis":
         - **Disseminação:** Publicação de um artigo científico em revista qualificada e apresentação dos resultados em congresso nacional.
         """
     )
-
