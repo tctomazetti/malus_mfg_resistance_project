@@ -360,8 +360,8 @@ elif pagina_selecionada == "Metodologia e Entregáveis":
     st.header("🔬 Metodologia e Resultados Esperados")
 
     st.subheader("Desenho Experimental")
-    # Você pode usar a imagem do fluxograma que criamos para os slides
-    # st.image("caminho/para/fluxograma_metodologia.png")
+
+    st.image("img/ed.png")
     st.write(
         """
         O projeto se baseia em cruzamentos controlados para responder a três perguntas fundamentais:
@@ -382,3 +382,4 @@ elif pagina_selecionada == "Metodologia e Entregáveis":
         - **Disseminação:** Publicação de um artigo científico em revista qualificada e apresentação dos resultados em congresso nacional.
         """
     )
+    st.image("img/exp_results.png")
