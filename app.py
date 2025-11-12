@@ -70,6 +70,8 @@ elif pagina_selecionada == "A Equipe":
     st.header("👥 Equipe Multidisciplinar")
     st.write("O sucesso do projeto é garantido por uma equipe com vasta experiência em áreas complementares.")
 
+    st.image("img/team.png")
+
     col1, col2 = st.columns(2)
 
     with col1:
